@@ -1,9 +1,9 @@
 {
-  "name": "amalgamatic-sfx",
-  "description": "SFX plugin for amalgamatic",
+  "name": "amalgamatic-millennium",
+  "description": "Millennium plugin for amalgamatic",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ucsf-ckm/amalgamatic-sfx.git"
+    "url": "https://github.com/ucsf-ckm/amalgamatic-millennium.git"
   },
   "version": "1.0.0",
   "dependencies": {
