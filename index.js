@@ -6,14 +6,14 @@ var url = require('url');
 exports.search = function (query, callback) {
     'use strict';
 
-    if (! query) {
+    if (! query || ! query.searchTerm) {
         callback({data: []});
         return;
     }
 
     var options = {
         host: 'ucsfcat.library.ucsf.edu',
-        path: '/search/X?' + querystring.stringify({SEARCH: query}) + '&SORT=D'
+        path: '/search/X?' + querystring.stringify({SEARCH: query.searchTerm}) + '&SORT=D'
     };
 
     http.get(options, function (res) {
