@@ -21,14 +21,16 @@ describe('exports', function () {
 	});
 
 	it('returns an empty result if no search term provided', function (done) {
-		millennium.search({searchTerm: ''}, function (result) {
+		millennium.search({searchTerm: ''}, function (err, result) {
+			expect(err).to.be.not.ok;
 			expect(result).to.deep.equal({data:[]});
 			done();
 		});
 	});
 
 	it('returns an empty result if no first argument', function (done) {
-		millennium.search(null, function (result) {
+		millennium.search(null, function (err, result) {
+			expect(err).to.be.not.ok;
 			expect(result).to.deep.equal({data:[]});
 			done();
 		});
@@ -39,7 +41,8 @@ describe('exports', function () {
 			.get('/search/X?SEARCH=medicine&SORT=D')
 			.reply('200', '<span class="briefcitTitle"><a href="#">Medicine</a></span><span class="briefcitTitle"><a class="Results" href="#">Medicine</a></span>');
 
-		millennium.search({searchTerm: 'medicine'}, function (result) {
+		millennium.search({searchTerm: 'medicine'}, function (err, result) {
+			expect(err).to.be.not.ok;
 			expect(result.data.length).to.equal(2);
 			done();
 		});
@@ -50,7 +53,8 @@ describe('exports', function () {
 			.get('/search/X?SEARCH=fhqwhgads&SORT=D')
 			.reply('200', '<html></html>');
 
-		millennium.search({searchTerm: 'fhqwhgads'}, function (result) {
+		millennium.search({searchTerm: 'fhqwhgads'}, function (err, result) {
+			expect(err).to.be.not.ok;
 			expect(result.data.length).to.equal(0);
 			done();
 		});
@@ -60,17 +64,18 @@ describe('exports', function () {
 		nock('http://ucsfcat.library.ucsf.edu')
 			.get('/search/X?SEARCH=cardenas%20gano&SORT=D')
 			.reply('200', '<div class="bibInfoData"><strong>El Pueblo Voto. ¡ Y Cardenas Gano! [electronic resource]</strong></div>');
-		millennium.search({searchTerm: 'cardenas gano'}, function (result) {
+		millennium.search({searchTerm: 'cardenas gano'}, function (err, result) {
+			expect(err).to.be.not.ok;
 			expect(result.data.length).to.equal(1);
 			done();
 		});
 	});
 
 	it('returns an error object if there was an HTTP error', function (done) {
-		millennium.search({searchTerm: 'medicine'}, function (result) {
+		millennium.search({searchTerm: 'medicine'}, function (err, result) {
 			nock.enableNetConnect();
-			expect(result.data).to.be.undefined;
-			expect(result.error).to.equal('Nock: Not allow net connect for "ucsfcat.library.ucsf.edu:80"');
+			expect(result).to.be.not.ok;
+			expect(err.message).to.equal('Nock: Not allow net connect for "ucsfcat.library.ucsf.edu:80"');
 			done();
 		});
 	});
