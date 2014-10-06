@@ -1,3 +1,16 @@
+# 2014-10-06
+4 commits against 2 issues, over 10 days [`2550d33`](https://github.com/ucsf-ckm/amalgamatic-millennium/commit/2550d33)⎆[`d31848f`](https://github.com/ucsf-ckm/amalgamatic-millennium/commit/d31848f)
+
+## [**3.0.1**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues?milestone=3&state=closed)
+- [**#8**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/8) add amalgamatic-plugin to keywords in package.json
+
+
+## Issues
+- [**#9**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/9) add keywords to package.json, fix for #8
+
+---
+
+
 # 2014-09-26
 4 commits against 2 issues, over 4 days [`b2ed3d8`](https://github.com/ucsf-ckm/amalgamatic-millennium/commit/b2ed3d8)⎆[`2cc5e9e`](https://github.com/ucsf-ckm/amalgamatic-millennium/commit/2cc5e9e)
 
