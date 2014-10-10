@@ -19,6 +19,11 @@ exports.search = function (query, callback) {
     http.get(options, function (res) {
         var rawData = '';
 
+        var contentType = res.headers['content-type'];
+        if (contentType && contentType.match(/iso-8859-1/i)) {
+            res.setEncoding('binary');
+        }
+
         res.on('data', function (chunk) {
             rawData += chunk;
         });
