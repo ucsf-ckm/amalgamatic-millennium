@@ -2,6 +2,15 @@ var querystring = require('querystring');
 var cheerio = require('cheerio');
 var http = require('http');
 var url = require('url');
+var extend = require('util-extend');
+
+var options = {
+    url: 'http://ucsfcat.library.ucsf.edu/search/X'
+};
+
+exports.setOptions = function (newOptions) {
+    options = extend(options, newOptions);
+};
 
 exports.search = function (query, callback) {
     'use strict';
@@ -11,12 +20,9 @@ exports.search = function (query, callback) {
         return;
     }
 
-    var options = {
-        host: 'ucsfcat.library.ucsf.edu',
-        path: '/search/X?' + querystring.stringify({SEARCH: query.searchTerm}) + '&SORT=D'
-    };
+    var myUrl = options.url + '?' + querystring.stringify({SEARCH: query.searchTerm, SORT: 'D'});
 
-    http.get(options, function (res) {
+    http.get(myUrl, function (res) {
         var rawData = '';
 
         var contentType = res.headers['content-type'];
@@ -38,14 +44,14 @@ exports.search = function (query, callback) {
                 $('.bibInfoData strong').each(function () {
                     result.push({
                         name: $(this).text(),
-                        url: url.format(options)
+                        url: url.format(myUrl)
                     });
                 });
             } else {
                 rawResults.each(function () {
                     result.push({
                         name: $(this).text(),
-                        url: url.resolve(url.format(options), $(this).attr('href'))
+                        url: url.resolve(url.format(myUrl), $(this).attr('href'))
                     });
                 });
             }

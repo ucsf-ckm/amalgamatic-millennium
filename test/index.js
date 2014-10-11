@@ -4,7 +4,6 @@ var millennium = require('../index.js');
 var Iconv  = require('iconv').Iconv;
 
 var nock = require('nock');
-nock.disableNetConnect();
 
 var Lab = require('lab');
 var lab = exports.lab = Lab.script();
@@ -13,12 +12,19 @@ var expect = Lab.expect;
 var describe = lab.experiment;
 var it = lab.test;
 var afterEach = lab.afterEach;
+var before = lab.before;
 
 describe('exports', function () {
+
+	before(function (done) {
+		nock.disableNetConnect();
+		done();
+	});
 
 	afterEach(function (done) {
 		nock.cleanAll();
 		nock.disableNetConnect();
+		millennium.setOptions({url: 'http://ucsfcat.library.ucsf.edu/search/X'});
 		done();
 	});
 
@@ -88,7 +94,7 @@ describe('exports', function () {
 
 		nock('http://ucsfcat.library.ucsf.edu')
 			.get('/search/X?SEARCH=ex%20vivo&SORT=D')
-			.reply(200, 
+			.reply(200,
 				iconv.convert('<span class="briefcitTitle"><a href="/result/1">Jürgen</a></span>'),
 				{'content-type': 'text/html; ISO-8859-1'}
 			);
@@ -100,10 +106,26 @@ describe('exports', function () {
 		});
 	});
 
+	it('should accept a URL as an option', function (done) {
+		nock('http://www.example.com')
+			.get('/X?SEARCH=test&SORT=D')
+			.reply(200,
+				'<span class="briefcitTitle"><a href="http://www.example.com/result/1">Test</a></span>'
+			);
+
+			millennium.setOptions({url: 'http://www.example.com/X'});
+
+			millennium.search({searchTerm: 'test'}, function (err, result) {
+				expect(err).to.be.not.ok;
+				expect(result.data).to.deep.equal([{name: 'Test', url: 'http://www.example.com/result/1'}]);
+				done();
+			});
+	});
+
 	it('should handle UTF-8 gracefully', function (done) {
 		nock('http://ucsfcat.library.ucsf.edu')
 			.get('/search/X?SEARCH=ex%20vivo&SORT=D')
-			.reply(200, 
+			.reply(200,
 				'<span class="briefcitTitle"><a href="/result/1">Jürgen</a></span>'
 			);
 
