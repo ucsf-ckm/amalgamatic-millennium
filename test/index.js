@@ -135,4 +135,18 @@ describe('exports', function () {
 			done();
 		});
 	});
+
+	it('should return a link to the search results page', function (done) {
+		nock('http://ucsfcat.library.ucsf.edu')
+			.get('/search/X?SEARCH=test&SORT=D')
+			.reply(200,
+				'<span class="briefcitTitle"><a href="/result/1">Test</a></span>'
+			);
+
+		millennium.search({searchTerm: 'test'}, function (err, result) {
+			expect(err).to.be.not.ok;
+			expect(result.url).to.equal('http://ucsfcat.library.ucsf.edu/search/X?SEARCH=test&SORT=D');
+			done();
+		});
+	});
 });

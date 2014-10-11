@@ -56,7 +56,7 @@ exports.search = function (query, callback) {
                 });
             }
 
-            callback(null, {data: result});
+            callback(null, {data: result, url: myUrl});
         });
     }).on('error', function (e) {
         callback(e);
