@@ -1,5 +1,6 @@
+var scraper = require('./lib/scraper');
+
 var querystring = require('querystring');
-var cheerio = require('cheerio');
 var http = require('http');
 var url = require('url');
 var extend = require('util-extend');
@@ -25,43 +26,10 @@ exports.search = function (query, callback) {
     var myOptions = url.parse(myUrl);
     myOptions.withCredentials = false;
 
-    http.get(myOptions, function (res) {
-        var rawData = '';
-
-        var contentType = res.headers['content-type'];
-        if (contentType && contentType.match(/iso-8859-1/i)) {
-            res.setEncoding('binary');
-        }
-
-        res.on('data', function (chunk) {
-            rawData += chunk;
-        });
-
-        res.on('end', function () {
-            var $ = cheerio.load(rawData);
-            var result = [];
-
-            //if there is not a .briefcitTitle a, it is a single record and that uses .bibInfoData strong
-            var rawResults = $('.briefcitTitle a');
-            if (rawResults.length === 0) {
-                $('.bibInfoData strong').each(function () {
-                    result.push({
-                        name: $(this).text(),
-                        url: url.format(myUrl)
-                    });
-                });
-            } else {
-                rawResults.each(function () {
-                    result.push({
-                        name: $(this).text(),
-                        url: url.resolve(url.format(myUrl), $(this).attr('href'))
-                    });
-                });
-            }
-
-            callback(null, {data: result, url: myUrl});
-        });
-    }).on('error', function (e) {
+    scraper.setCallback(callback);
+    scraper.setUrl(myUrl);
+    http.get(myOptions, scraper.scrape)
+    .on('error', function (e) {
         callback(e);
     });
 };
