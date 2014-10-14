@@ -16,6 +16,7 @@ var it = lab.test;
 var afterEach = lab.afterEach;
 var before = lab.before;
 
+
 var revert;
 
 describe('exports', function () {
@@ -158,7 +159,7 @@ describe('exports', function () {
 		});
 	});
 
-	it('should set withCredentials to false', function (done) {
+	it('should set withCredentials to false (browserify)', function (done) {
 		revert = millennium.__set__({http: {get: function (options) {
 			expect(options.withCredentials).to.be.false;
 			done();
@@ -167,4 +168,21 @@ describe('exports', function () {
 
 		millennium.search({searchTerm: 'medicine'});
 	});
+
+	// it('should not call res.setEncoding() if it does not exist (browserify)', function (done) {
+	// 	var iconv = new Iconv('UTF-8', 'ISO-8859-1');
+
+	// 	nock('http://ucsfcat.library.ucsf.edu')
+	// 		.get('/search/X?SEARCH=ex%20vivo&SORT=D')
+	// 		.reply(200,
+	// 			iconv.convert('<span class="briefcitTitle"><a href="/result/1">Jürgen</a></span>'),
+	// 			{'content-type': 'text/html; ISO-8859-1'}
+	// 		);
+
+	// 	millennium.search({searchTerm: 'ex vivo'}, function (err, result) {
+	// 		expect(err).to.be.not.ok;
+	// 		expect(result.data[0].name).to.equal('Jürgen');
+	// 		done();
+	// 	});
+	// })
 });
