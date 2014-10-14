@@ -1,4 +1,7 @@
 
+## [**3.1.2**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues?milestone=7&state=closed)
+- [**#16**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/16) setEncoding not available in browserify
+
 ## [**3.1.1.**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues?milestone=6&state=closed)
 - [**#14**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/14) withCredentials default to false for browserify
 
