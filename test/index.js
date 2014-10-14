@@ -1,6 +1,8 @@
 /*jshint expr: true*/
 
-var millennium = require('../index.js');
+var rewire = require('rewire');
+
+var millennium = rewire('../index.js');
 var Iconv  = require('iconv').Iconv;
 
 var nock = require('nock');
@@ -14,6 +16,8 @@ var it = lab.test;
 var afterEach = lab.afterEach;
 var before = lab.before;
 
+var revert;
+
 describe('exports', function () {
 
 	before(function (done) {
@@ -23,6 +27,10 @@ describe('exports', function () {
 
 	afterEach(function (done) {
 		nock.cleanAll();
+		if (revert) {
+			revert();
+			revert = null;
+		}
 		nock.disableNetConnect();
 		millennium.setOptions({url: 'http://ucsfcat.library.ucsf.edu/search/X'});
 		done();
@@ -148,5 +156,15 @@ describe('exports', function () {
 			expect(result.url).to.equal('http://ucsfcat.library.ucsf.edu/search/X?SEARCH=test&SORT=D');
 			done();
 		});
+	});
+
+	it('should set withCredentials to false', function (done) {
+		revert = millennium.__set__({http: {get: function (options) {
+			expect(options.withCredentials).to.be.false;
+			done();
+			return {on: function () {}};
+		}}});
+
+		millennium.search({searchTerm: 'medicine'});
 	});
 });

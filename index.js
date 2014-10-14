@@ -22,7 +22,10 @@ exports.search = function (query, callback) {
 
     var myUrl = options.url + '?' + querystring.stringify({SEARCH: query.searchTerm, SORT: 'D'});
 
-    http.get(myUrl, function (res) {
+    var myOptions = url.parse(myUrl);
+    myOptions.withCredentials = false;
+
+    http.get(myOptions, function (res) {
         var rawData = '';
 
         var contentType = res.headers['content-type'];
