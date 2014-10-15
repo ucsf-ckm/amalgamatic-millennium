@@ -1,4 +1,8 @@
 
+## [**3.1.3**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues?milestone=8&state=closed)
+- [**#2**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/2) Document usage
+- [**#5**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/5) Travis-CI
+
 ## [**3.1.2**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues?milestone=7&state=closed)
 - [**#16**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/16) setEncoding not available in browserify
 
