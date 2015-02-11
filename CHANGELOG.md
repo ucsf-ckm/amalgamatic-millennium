@@ -1,4 +1,7 @@
 
+## [**3.1.4**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues?milestone=9&state=closed)
+- [**#20**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/20) Do not release Zalgo
+
 ## [**3.1.3**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues?milestone=8&state=closed)
 - [**#2**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/2) Document usage
 - [**#5**](https://github.com/ucsf-ckm/amalgamatic-millennium/issues/5) Travis-CI
