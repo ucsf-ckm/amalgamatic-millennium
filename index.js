@@ -17,8 +17,9 @@ exports.search = function (query, callback) {
     'use strict';
 
     if (! query || ! query.searchTerm) {
-        callback(null, {data: []});
-        return;
+        return process.nextTick(function() {
+            callback(null, {data: []});
+        });
     }
 
     var myUrl = options.url + '?' + querystring.stringify({SEARCH: query.searchTerm, SORT: 'D'});
