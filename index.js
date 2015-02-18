@@ -1,4 +1,4 @@
-var scraper = require('./lib/scraper');
+var Scraper = require('./lib/scraper');
 
 var querystring = require('querystring');
 var http = require('http');
@@ -27,9 +27,8 @@ exports.search = function (query, callback) {
     var myOptions = url.parse(myUrl);
     myOptions.withCredentials = false;
 
-    scraper.setCallback(callback);
-    scraper.setUrl(myUrl);
-    http.get(myOptions, scraper.scrape)
+    var scraper = new Scraper(myUrl, callback);
+    http.get(myOptions, scraper.scrape.bind(scraper))
     .on('error', function (e) {
         callback(e);
     });
