@@ -169,20 +169,31 @@ describe('exports', function () {
 		millennium.search({searchTerm: 'medicine'});
 	});
 
-	// it('should not call res.setEncoding() if it does not exist (browserify)', function (done) {
-	// 	var iconv = new Iconv('UTF-8', 'ISO-8859-1');
+	it('should trigger callback that was set at invocation time', function (done) {
+		nock('http://ucsfcat.library.ucsf.edu')
+			.get('/search/X?SEARCH=slow&SORT=D')
+			.delay(100)
+			.reply(200,
+				'<span class="briefcitTitle"><a href="/result/1">Test</a></span>'
+			);
 
-	// 	nock('http://ucsfcat.library.ucsf.edu')
-	// 		.get('/search/X?SEARCH=ex%20vivo&SORT=D')
-	// 		.reply(200,
-	// 			iconv.convert('<span class="briefcitTitle"><a href="/result/1">Jürgen</a></span>'),
-	// 			{'content-type': 'text/html; ISO-8859-1'}
-	// 		);
+		nock('http://ucsfcat.library.ucsf.edu')
+			.get('/search/X?SEARCH=fast&SORT=D')
+			.reply(200,
+				'<span class="briefcitTitle"><a href="/result/1">Test</a></span>'
+			);
 
-	// 	millennium.search({searchTerm: 'ex vivo'}, function (err, result) {
-	// 		expect(err).to.be.not.ok;
-	// 		expect(result.data[0].name).to.equal('Jürgen');
-	// 		done();
-	// 	});
-	// })
+		var count = 0;
+
+		millennium.search({searchTerm: 'slow'}, function () {
+			expect(count).to.equal(1);
+			done();
+		});
+
+		millennium.search({searchTerm: 'fast'}, function () {
+			count = count + 1;
+			expect(count).to.equal(1);
+		});
+
+	});
 });

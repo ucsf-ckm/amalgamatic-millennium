@@ -1,6 +1,6 @@
 /*jshint expr: true*/
 
-var scraper = require('../../../lib/scraper');
+var Scraper = require('../../../lib/scraper');
 
 var Lab = require('lab');
 var lab = exports.lab = Lab.script();
@@ -9,9 +9,17 @@ var expect = Lab.expect;
 var describe = lab.experiment;
 var it = lab.test;
 
-describe('scrape()', function () {
-	it('should not call res.setEncoding() if it does not exist (browserify)', function (done) {
+var beforeEach = lab.beforeEach;
 
+describe('scrape()', function () {
+		var scraper;
+
+		beforeEach(function (done) {
+			scraper = new Scraper();
+			done();
+		});
+
+	it('should not call res.setEncoding() if it does not exist (browserify)', function (done) {
 		// This will throw a TypeError if scraper() tries to call res.setEncoding()
 		scraper.scrape({
 			headers: {'content-type': 'iso-8859-1'}, 
